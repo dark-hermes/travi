@@ -149,7 +149,7 @@
         @can('role-list')
             <li class="nav-item">
                 <a class="nav-link {{ Route::currentRouteName() == 'roles' ? 'active' : '' }}"
-                    href="{{ route('dashboard') }}">
+                    href="{{ route('roles.index') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i style="font-size: 1rem;" class="bx bxs-check-shield ps-2 pe-2 text-center

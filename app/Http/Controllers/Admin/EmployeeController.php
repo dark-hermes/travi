@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use App\Http\Controllers\Controller;
 
 class EmployeeController extends Controller
 {
@@ -16,11 +17,67 @@ class EmployeeController extends Controller
     public function index(Request $request)
     {
         try {
+            $isSuperadmin = auth()->user()->hasRole('superadmin');
             $employees = User::whereHas('roles', function ($query) {
-                $query->whereNot('name', 'customer');
-            })->paginate(10);
+                $query->where('name', '!=', 'customer');
+                })
+                ->when(! $isSuperadmin, function ($query) {
+                    $query->whereHas('roles', function ($query) {
+                        $query->where('name', '!=', 'superadmin');
+                    });
+                })
+                ->when($request->search, function ($query) use ($request, $isSuperadmin) {
+                    $query->whereHas('roles', function ($query) use ($isSuperadmin) {
+                        $isSuperadmin
+                            ? $query->whereNot('name', 'customer')
+                            : $query->whereNotIn('name', ['superadmin', 'customer']);
+                    })
+                        ->where('name', 'like', "%{$request->search}%")
+                        ->orWhere('email', 'like', "%{$request->search}%")
+                        ->orWhere('phone', 'like', "%{$request->search}%")
+                        ->orWhereHas('roles', function ($query) use ($request) {
+                            $query->where('name', 'like', "%{$request->search}%");
+                        });
+                })->paginate(10);
 
             return view('admin.employees.index', compact('employees'))->with('success', 'Employees retrieved successfully');
+        } catch (\Exception $e) {
+            return redirect()->route('employees.index')->with('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        try {
+            $isSuperadmin = auth()->user()->hasRole('superadmin');
+            $roles = $isSuperadmin
+                ? Role::whereNot('name', 'customer')->get()
+                : Role::whereNotIn('name', ['superadmin', 'customer'])->get();
+            return view('admin.employees.create', compact('roles'));
+        } catch (\Exception $e) {
+            return redirect()->route('employees.index')->with('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|string|min:3|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:8|max:255|confirmed',
+            'role' => 'required|exists:roles,name',
+        ]);
+
+        try {
+            $user = User::create($request->only('name', 'email', 'password'));
+            $user->assignRole($request->role);
+            return redirect()->route('employees.index')->with('success', 'User created successfully');
         } catch (\Exception $e) {
             return redirect()->route('employees.index')->with('error', $e->getMessage());
         }
@@ -47,7 +104,10 @@ class EmployeeController extends Controller
     public function edit(string $id)
     {
         try {
-            $roles = Role::all();
+            $isSuperadmin = auth()->user()->hasRole('superadmin');
+            $roles = $isSuperadmin
+                ? Role::whereNot('name', 'customer')->get()
+                : Role::whereNotIn('name', ['superadmin', 'customer'])->get();
             $employee = User::where('id', $id)->whereHas('roles', function ($query) {
                 $query->whereNot('name', 'customer');
             })->firstOrFail();

@@ -9,7 +9,32 @@
                 <h6 class="mb-0">{{ __('Edit User') }}</h6>
             </div>
             <div class="card-body pt-4 p-3">
-                <form action="{{ route('users.update', $user->id) }}" method="POST" enctype="multipart/form-data">
+                {{-- Show image in center and two buttons below for upload and delete image --}}
+                <div class="d-flex justify-content-center">
+                    <div class="avatar avatar-xl">
+                        <img src="{{ $user->image_path }}" alt="..." class="avatar avatar-xl me-3">
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-center mt-3">
+                    <div class="btn-group">
+                        <form action="{{ route('users.store-image', $user->id) }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <input type="file" name="image" id="image" class="d-none" accept="image/*" onchange="document.getElementById('upload').click()">
+                            {{-- Upload button --}}
+                            <button type="button" class="btn btn-sm btn-link" onclick="document.getElementById('image').click()">
+                                {{ __('Change Avatar') }}
+                            </button>
+
+                            {{-- Disable until image inputed --}}
+                            <button type="submit" class="d-none" id="upload">
+                                {{ __('Upload') }}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <form action="{{ route('users.update', $user->id) }}" method="POST">
                     @csrf
                     @method('PUT')
                     @if($errors->any())
@@ -50,7 +75,7 @@
                     <div class="form-group">
                         <label for="roles" class="form-control-label">{{ __('Roles') }}</label>
                         <select name="role" id="role" class="form-control" required>
-                            <option value="">Select Role</option>
+                            <option value="" selected disabled>{{ __('Select Role') }}</option>
                             @foreach ($roles as $role)
                                 <option value="{{ $role->name }}" {{ $user->hasRole($role->name) ? 'selected' : '' }}>{{ str()->title($role->name) }}</option>
                             @endforeach
@@ -59,12 +84,15 @@
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-                    <div class="d-flex justify-content-end">
-                        <button type="submit" class="btn bg-gradient-dark mt-4 mb-0">{{ __('Save') }}</button>
+                    {{-- Back and Update button --}}
+                    <div class="d-block text-end">
+                        <a href="{{ route('users.index') }}" class="btn bg-gradient-dark w-25 mx-2 mb-2">{{ __('Back') }}</a>
+                        <button type="submit" class="btn bg-gradient-primary w-25 mx-2 mb-2">{{ __('Update') }}</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
 @endsection

@@ -7,11 +7,29 @@
         <div class="col-12">
             <div class="card mb-4 mx-4">
                 <div class="card-header pb-0">
+                    @if (session('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+                    @if (session('error'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{ session('error') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
                     <div class="d-flex flex-row justify-content-between">
                         <div>
                             <h5 class="mb-0">All Employees</h5>
                         </div>
-                        {{-- <a href={{ route('users.create') }} class="btn btn-primary btn-sm">+&nbsp;Add User</a> --}}
+                        <form action="{{ route('employees.index') }}" method="GET">
+                            <div class="input-group-sm">
+                                {{-- Submit when enter pressed --}}
+                                <input type="text" name="search" class="form-control" placeholder="Search . . ." value="{{ request()->query('search') }}" onkeypress="if(event.keyCode == 13) { event.preventDefault(); this.form.submit(); }">
+                            </div>
+                        </form>
+                        <a href={{ route('employees.create') }} class="btn btn-primary btn-sm">+&nbsp;Add Employee</a>
                     </div>
                 </div>
                 <div class="card-body px-0 pt-0 pb-2">
@@ -33,6 +51,9 @@
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Email
+                                    </th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Phone
                                     </th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Role
@@ -90,6 +111,9 @@
                                     </td>
                                     <td class="align-middle text-sm">
                                         <span class="text-secondary text-xs font-weight-bold">{{ $employee->email }}</span>
+                                    </td>
+                                    <td class="align-middle text-sm">
+                                        <span class="text-secondary text-xs font-weight-bold">{{ $employee->phone }}</span>
                                     </td>
                                     <td class="align-middle text-center">
                                         <span class="text-secondary text-xs font-weight-bold">

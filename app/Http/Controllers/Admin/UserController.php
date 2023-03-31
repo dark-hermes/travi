@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
+use App\Models\Image;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
@@ -24,12 +25,23 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+        $isSuperadmin = auth()->user()->hasRole('superadmin');
         $search = $request->query('search');
-        $users = User::query()
-            ->when($search, fn ($query, $search) =>
-                $query->where('name', 'like', "%{$search}%")
-                    ->orWhere('email', 'like', "%{$search}%")
+        $users = User::when(! $isSuperadmin, fn ($query) =>
+                $query->whereHas('roles', fn ($query) =>
+                    $query->where('name', '!=', 'superadmin')
+                )
             )
+            ->when($search, function ($query) use ($search, $isSuperadmin) {
+                $query->whereHas('roles', fn ($query) => ! $isSuperadmin
+                    ? $query->where('name', '!=', 'superadmin')
+                    : $query
+                )
+                ->where('name', 'like', "%{$search}%")
+                ->orWhere('email', 'like', "%{$search}%")
+                ->orWhere('phone', 'like', "%{$search}%")
+                ->orWhereHas('roles', fn ($query) => $query->where('name', 'like', "%{$search}%"));
+            })
             ->paginate(10);
 
         return view('admin.users.index', compact(['users', 'search']));
@@ -41,7 +53,10 @@ class UserController extends Controller
     public function create()
     {
         try {
-            $roles = Role::all();
+            $isSuperadmin = auth()->user()->hasRole('superadmin');
+            $roles = $isSuperadmin
+                ? Role::all()
+                : Role::where('name', '!=', 'superadmin')->get();
             return view('admin.users.create', compact('roles'));
         } catch (\Exception $e) {
             return redirect()->route('users.index')->with('error', $e->getMessage());
@@ -69,6 +84,22 @@ class UserController extends Controller
         }
     }
 
+    public function storeImage(Request $request, string $id)
+    {
+        $this->validate($request, [
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        try {
+            $user = User::findOrFail($id);
+            $dir = 'avatars';
+            $image = Image::store($request->file('image'), $dir, $user, true);
+            return redirect()->route('users.edit', $user->id)->with('success', 'Image uploaded successfully');
+        } catch (\Exception $e) {
+            return redirect()->route('users.index')->with('error', $e->getMessage());
+        }
+    }
+
     /**
      * Display the specified resource.
      */
@@ -89,7 +120,10 @@ class UserController extends Controller
     {
         try {
             $user = User::findOrFail($id);
-            $roles = Role::all();
+            $isSuperadmin = auth()->user()->hasRole('superadmin');
+            $roles = $isSuperadmin
+                ? Role::all()
+                : Role::where('name', '!=', 'superadmin')->get();
             return view('admin.users.edit', compact('user', 'roles'));
         } catch (\Exception $e) {
             return redirect()->route('users.index')->with('error', $e->getMessage());
@@ -129,6 +163,18 @@ class UserController extends Controller
             $user = User::findOrFail($id);
             $user->delete();
             return redirect()->route('users.index')->with('success', 'User deleted successfully');
+        } catch (\Exception $e) {
+            return redirect()->route('users.index')->with('error', $e->getMessage());
+        }
+    }
+
+    public function destroyImage(string $id)
+    {
+        try {
+            $user = User::findOrFail($id);
+            $image = $user->image;
+            Image::purge($image);
+            return redirect()->route('users.edit', $user->id)->with('success', 'Image deleted successfully');
         } catch (\Exception $e) {
             return redirect()->route('users.index')->with('error', $e->getMessage());
         }

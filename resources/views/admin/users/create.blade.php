@@ -65,6 +65,7 @@
                     <div class="form-group">
                         <label for="role" class="form-control-label">{{ __('Role') }}</label>
                         <select name="role" id="role" class="form-control" required>
+                            <option value="" selected disabled>{{ __('Select Role') }}</option>
                             @foreach ($roles as $role)
                                 <option value="{{ $role->name }}" {{ old('role') == $role->name ? 'selected' : '' }}>{{ str($role->name)->title() }}</option>
                             @endforeach
@@ -73,8 +74,10 @@
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-                    <div class="d-flex justify-content-end">
-                        <button type="submit" class="btn bg-gradient-dark mt-4 mb-0">{{ __('Create') }}</button>
+                    {{-- Back and Update button --}}
+                    <div class="d-block text-end">
+                        <a href="{{ route('users.index') }}" class="btn bg-gradient-dark w-25 mx-2 mb-2">{{ __('Back') }}</a>
+                        <button type="submit" class="btn bg-gradient-primary w-25 mx-2 mb-2">{{ __('Create') }}</button>
                     </div>
                 </form>
             </div>

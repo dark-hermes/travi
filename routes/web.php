@@ -5,12 +5,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Password;
 use App\Http\Controllers\ResetController;
-use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\InfoUserController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\ChangePasswordController;
+use App\Http\Controllers\RoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,11 +25,15 @@ use App\Http\Controllers\ChangePasswordController;
 */
 
 Route::group(['middleware' => 'auth'], function () {
+    Route::post('users/{id}/image', [UserController::class, 'storeImage'])->name('users.store-image');
+    Route::delete('users/{id}/image', [UserController::class, 'destroyImage'])->name('users.destroy-image');
     Route::put('users/{id}/switch-status', [UserController::class, 'switchStatus'])->name('users.switch-status');
     Route::resource('users', UserController::class);
 
     Route::put('employees/{id}/switch-status', [EmployeeController::class, 'switchStatus'])->name('employees.switch-status');
     Route::resource('employees', EmployeeController::class);
+
+    Route::resource('roles', RoleController::class);
 
 	Route::get('dashboard', function () {
 		return view('dashboard');
