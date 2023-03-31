@@ -15,11 +15,10 @@ class News extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-      'title',
-      'slug',
-      'published_at',
-      'content',
-      'news_category_id',
+        'title',
+        'slug',
+        'content',
+        'news_category_id',
     ];
 
     /* A method that is used by the `Sluggable` trait to generate a slug for the model. */

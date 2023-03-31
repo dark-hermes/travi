@@ -15,8 +15,7 @@
                         <img src="{{ $employee->image_path }}" alt="..." class="avatar avatar-xl me-3">
                     </div>
                 </div>
-
-                <div class="d-flex justify-content-center mt-3">
+                <div class="d-flex justify-content-center mt-2">
                     <div class="btn-group">
                         <form action="{{ route('users.store-image', $employee->id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
@@ -33,7 +32,6 @@
                         </form>
                     </div>
                 </div>
-            <div class="card-body pt-4 p-3">
                 <form action="{{ route('employees.update', $employee->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
@@ -100,8 +98,10 @@
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
+
                     {{-- Back and Update button --}}
                     <div class="d-block text-end">
+                        <a href="{{ route('employees.edit-password', $employee->id) }}" class="btn btn-sm btn-link text-primary">{{ __('Click here to change password') }}</a>
                         <a href="{{ route('employees.index') }}" class="btn bg-gradient-dark w-25 mx-2 mb-2">{{ __('Back') }}</a>
                         <button type="submit" class="btn bg-gradient-primary w-25 mx-2 mb-2">{{ __('Update') }}</button>
                     </div>

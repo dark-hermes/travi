@@ -192,4 +192,31 @@ class UserController extends Controller
             return redirect()->route('users.index')->with('error', $e->getMessage());
         }
     }
+
+    public function editPassword(string $id)
+    {
+        try {
+            $user = User::findOrFail($id);
+            return view('admin.users.edit-password', compact('user'));
+        } catch (\Exception $e) {
+            return redirect()->route('users.index')->with('error', $e->getMessage());
+        }
+    }
+
+    public function updatePassword(Request $request, string $id)
+    {
+        $this->validate($request, [
+            'password' => 'required|string|min:8|max:255|confirmed',
+        ]);
+
+        try {
+            $user = User::findOrFail($id);
+            $user->update([
+                'password' => bcrypt($request->password)
+            ]);
+            return back()->with('success', 'Password updated successfully');
+        } catch (\Exception $e) {
+            return redirect()->route('users.index')->with('error', $e->getMessage());
+        }
+    }
 }

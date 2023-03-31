@@ -25,15 +25,21 @@ use App\Http\Controllers\RoleController;
 */
 
 Route::group(['middleware' => 'auth'], function () {
+    Route::get('users/{id}/edit-password', [UserController::class, 'editPassword'])->name('users.edit-password');
+    Route::put('users/{id}/update-password', [UserController::class, 'updatePassword'])->name('users.update-password');
     Route::post('users/{id}/image', [UserController::class, 'storeImage'])->name('users.store-image');
     Route::delete('users/{id}/image', [UserController::class, 'destroyImage'])->name('users.destroy-image');
     Route::put('users/{id}/switch-status', [UserController::class, 'switchStatus'])->name('users.switch-status');
     Route::resource('users', UserController::class);
 
+    Route::get('employees/{id}/edit-password', [EmployeeController::class, 'editPassword'])->name('employees.edit-password');
+    Route::put('employees/{id}/update-password', [EmployeeController::class, 'updatePassword'])->name('employees.update-password');
     Route::put('employees/{id}/switch-status', [EmployeeController::class, 'switchStatus'])->name('employees.switch-status');
     Route::resource('employees', EmployeeController::class);
 
     Route::resource('roles', RoleController::class);
+
+    Route::resource('news-categories', NewsCategoryController::class);
 
 	Route::get('dashboard', function () {
 		return view('dashboard');

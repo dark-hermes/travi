@@ -18,147 +18,154 @@
             <span class="nav-link-text ms-1">Dashboard</span>
             </a>
         </li>
-        <li class="nav-item mt-2">
-            <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Tour and Reservation</h6>
-        </li>
-        @can('reservation-list')
-        <li class="nav-item">
-            <a class="nav-link {{ Route::currentRouteName() == 'reservations.index' ? 'active' : '' }}"
-                href="{{ route('dashboard') }}">
-                <div
-                    class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                    <i style="font-size: 1rem;" class="bx bx-calendar-event ps-2 pe-2 text-center
-                    {{ in_array(request()->route()->getName(),['reservations']) ? 'text-white' : 'text-dark' }}"></i>
-                </div>
-                <span class="nav-link-text ms-1">Reserveration</span>
-            </a>
-        </li>
-        @endcan
-        @can('tour-package-list')
-            <li class="nav-item">
-                <a class="nav-link {{ Route::currentRouteName() == 'tour-packages.index' ? 'active' : '' }}"
-                    href="{{ route('dashboard') }}">
-                    <div
-                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1rem;" class="bx bx-directions ps-2 pe-2 text-center
-                        {{ in_array(request()->route()->getName(),['tour-packages']) ? 'text-white' : 'text-dark' }}"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Tour Package</span>
-                </a>
-            </li>
-        @endcan
-        @can('lodge-list')
-            <li class="nav-item">
-                <a class="nav-link {{ Route::currentRouteName() == 'lodges.index' ? 'active' : '' }}"
-                    href="{{ route('dashboard') }}">
-                    <div
-                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1rem;" class="bx bx-home ps-2 pe-2 text-center
-                        {{ in_array(request()->route()->getName(),['lodges']) ? 'text-white' : 'text-dark' }}"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Lodge</span>
-                </a>
-            </li>
-        @endcan
-        @can('tour-list')
-            <li class="nav-item">
-                <a class="nav-link {{ Route::currentRouteName() == 'tours.index' ? 'active' : '' }}"
-                    href="{{ route('dashboard') }}">
-                    <div
-                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1rem;" class="bx bx-map ps-2 pe-2 text-center
-                        {{ in_array(request()->route()->getName(),['tours']) ? 'text-white' : 'text-dark' }}"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Tour Object</span>
-                </a>
-            </li>
-        @endcan
-        @can('tour-category-list')
-            <li class="nav-item">
-                <a class="nav-link {{ Route::currentRouteName() == 'tour-categories.index' ? 'active' : '' }}"
-                    href="{{ route('dashboard') }}">
-                    <div
-                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1rem;" class="bx bx-category ps-2 pe-2 text-center
-                        {{ in_array(request()->route()->getName(),['tour-categories']) ? 'text-white' : 'text-dark' }}"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Tour Category</span>
-                </a>
-            </li>
-        @endcan
 
-        <li class="nav-item mt-2">
-            <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">News</h6>
-        </li>
-        @can('news-list')
-            <li class="nav-item">
-                <a class="nav-link {{ Route::currentRouteName() == 'news.index' ? 'active' : '' }}"
-                    href="{{ route('dashboard') }}">
-                    <div
-                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1rem;" class="bx bx-news ps-2 pe-2 text-center
-                        {{ in_array(request()->route()->getName(),['news']) ? 'text-white' : 'text-dark' }}"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">News</span>
-                </a>
+        @canany(['reservation-list','tour-package-list', 'lodge-list', 'tour-list', 'tour-category-list'])
+            <li class="nav-item mt-2">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Tour and Reservation</h6>
             </li>
-        @endcan
-        @can('news-category-list')
-            <li class="nav-item">
-                <a class="nav-link {{ Route::currentRouteName() == 'news-categories.index' ? 'active' : '' }}"
-                    href="{{ route('dashboard') }}">
-                    <div
-                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1rem;" class="bx bx-category ps-2 pe-2 text-center
-                        {{ in_array(request()->route()->getName(),['news-categories']) ? 'text-white' : 'text-dark' }}"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">News Category</span>
-                </a>
-            </li>
-        @endcan
+            @can('reservation-list')
+                <li class="nav-item">
+                    <a class="nav-link {{ Route::currentRouteName() == 'reservations.index' ? 'active' : '' }}"
+                        href="{{ route('dashboard') }}">
+                        <div
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i style="font-size: 1rem;" class="bx bx-calendar-event ps-2 pe-2 text-center
+                            {{ in_array(request()->route()->getName(),['reservations']) ? 'text-white' : 'text-dark' }}"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Reserveration</span>
+                    </a>
+                </li>
+            @endcan
+            @can('tour-package-list')
+                <li class="nav-item">
+                    <a class="nav-link {{ Route::currentRouteName() == 'tour-packages.index' ? 'active' : '' }}"
+                        href="{{ route('dashboard') }}">
+                        <div
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i style="font-size: 1rem;" class="bx bx-directions ps-2 pe-2 text-center
+                            {{ in_array(request()->route()->getName(),['tour-packages']) ? 'text-white' : 'text-dark' }}"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Tour Package</span>
+                    </a>
+                </li>
+            @endcan
+            @can('lodge-list')
+                <li class="nav-item">
+                    <a class="nav-link {{ Route::currentRouteName() == 'lodges.index' ? 'active' : '' }}"
+                        href="{{ route('dashboard') }}">
+                        <div
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i style="font-size: 1rem;" class="bx bx-home ps-2 pe-2 text-center
+                            {{ in_array(request()->route()->getName(),['lodges']) ? 'text-white' : 'text-dark' }}"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Lodge</span>
+                    </a>
+                </li>
+            @endcan
+            @can('tour-list')
+                <li class="nav-item">
+                    <a class="nav-link {{ Route::currentRouteName() == 'tours.index' ? 'active' : '' }}"
+                        href="{{ route('dashboard') }}">
+                        <div
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i style="font-size: 1rem;" class="bx bx-map ps-2 pe-2 text-center
+                            {{ in_array(request()->route()->getName(),['tours']) ? 'text-white' : 'text-dark' }}"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Tour Object</span>
+                    </a>
+                </li>
+            @endcan
+            @can('tour-category-list')
+                <li class="nav-item">
+                    <a class="nav-link {{ Route::currentRouteName() == 'tour-categories.index' ? 'active' : '' }}"
+                        href="{{ route('dashboard') }}">
+                        <div
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i style="font-size: 1rem;" class="bx bx-category ps-2 pe-2 text-center
+                            {{ in_array(request()->route()->getName(),['tour-categories']) ? 'text-white' : 'text-dark' }}"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Tour Category</span>
+                    </a>
+                </li>
+            @endcan
+        @endcanany
 
-        <li class="nav-item mt-2">
-            <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">ACL</h6>
-        </li>
-        @can('employee-list')
-            <li class="nav-item">
-                <a class="nav-link {{ Route::currentRouteName() == 'employees.index' ? 'active' : '' }}"
-                    href="{{ route('employees.index') }}">
-                    <div
-                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1rem;" class="bx bx-user ps-2 pe-2 text-center
-                        {{ in_array(request()->route()->getName(),['employees']) ? 'text-white' : 'text-dark' }}"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Employee</span>
-                </a>
+        @canany(['news-list','news-category-list'])
+            <li class="nav-item mt-2">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">News</h6>
             </li>
-        @endcan
-        @can('user-list')
-            <li class="nav-item">
-                <a class="nav-link {{ Route::currentRouteName() == 'users.index' ? 'active' : '' }}"
-                    href="{{ route('users.index') }}">
-                    <div
-                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1rem;" class="bx bx-user ps-2 pe-2 text-center
-                        {{ in_array(request()->route()->getName(),['users']) ? 'text-white' : 'text-dark' }}"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">User</span>
-                </a>
+            @can('news-list')
+                <li class="nav-item">
+                    <a class="nav-link {{ Route::currentRouteName() == 'news.index' ? 'active' : '' }}"
+                        href="{{ route('dashboard') }}">
+                        <div
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i style="font-size: 1rem;" class="bx bx-news ps-2 pe-2 text-center
+                            {{ in_array(request()->route()->getName(),['news']) ? 'text-white' : 'text-dark' }}"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">News</span>
+                    </a>
+                </li>
+            @endcan
+            @can('news-category-list')
+                <li class="nav-item">
+                    <a class="nav-link {{ Route::currentRouteName() == 'news-categories.index' ? 'active' : '' }}"
+                        href="{{ route('dashboard') }}">
+                        <div
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i style="font-size: 1rem;" class="bx bx-category ps-2 pe-2 text-center
+                            {{ in_array(request()->route()->getName(),['news-categories']) ? 'text-white' : 'text-dark' }}"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">News Category</span>
+                    </a>
+                </li>
+            @endcan
+        @endcanany
+
+        @canany(['employee-list', 'user-list', 'role-list'])
+            <li class="nav-item mt-2">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">ACL</h6>
             </li>
-        @endcan
-        @can('role-list')
-            <li class="nav-item">
-                <a class="nav-link {{ Route::currentRouteName() == 'roles' ? 'active' : '' }}"
-                    href="{{ route('roles.index') }}">
-                    <div
-                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1rem;" class="bx bxs-check-shield ps-2 pe-2 text-center
-                        {{ in_array(request()->route()->getName(),['roles']) ? 'text-white' : 'text-dark' }}"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Role</span>
-                </a>
-            </li>
-        @endcan
+            @can('employee-list')
+                <li class="nav-item">
+                    <a class="nav-link {{ Route::currentRouteName() == 'employees.index' ? 'active' : '' }}"
+                        href="{{ route('employees.index') }}">
+                        <div
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i style="font-size: 1rem;" class="bx bx-user ps-2 pe-2 text-center
+                            {{ in_array(request()->route()->getName(),['employees']) ? 'text-white' : 'text-dark' }}"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Employee</span>
+                    </a>
+                </li>
+            @endcan
+            @can('user-list')
+                <li class="nav-item">
+                    <a class="nav-link {{ Route::currentRouteName() == 'users.index' ? 'active' : '' }}"
+                        href="{{ route('users.index') }}">
+                        <div
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i style="font-size: 1rem;" class="bx bx-user ps-2 pe-2 text-center
+                            {{ in_array(request()->route()->getName(),['users']) ? 'text-white' : 'text-dark' }}"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">User</span>
+                    </a>
+                </li>
+            @endcan
+            @can('role-list')
+                <li class="nav-item">
+                    <a class="nav-link {{ Route::currentRouteName() == 'roles' ? 'active' : '' }}"
+                        href="{{ route('roles.index') }}">
+                        <div
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i style="font-size: 1rem;" class="bx bxs-check-shield ps-2 pe-2 text-center
+                            {{ in_array(request()->route()->getName(),['roles']) ? 'text-white' : 'text-dark' }}"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Role</span>
+                    </a>
+                </li>
+            @endcan
+        @endcanany
         <li class="nav-item mt-2">
             <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Laravel Examples</h6>
         </li>
