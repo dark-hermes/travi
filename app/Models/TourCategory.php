@@ -21,6 +21,6 @@ class TourCategory extends Model
      */
     public function tours(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(Tour::class);
+        return $this->hasMany(Tour::class, 'tour_category_id');
     }
 }

@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\NewsCategory;
+use App\Models\TourCategory;
 use Illuminate\Http\Request;
 
-class NewsCategoryController extends Controller
+class TourCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $newsCategories = NewsCategory::paginate(10);
-        return view('admin.news-categories.index', compact('newsCategories'));
+        $search = $request->query('search');
+        $tourCategories = TourCategory::where('name', 'like', "%{$search}%")
+            ->paginate(10);
+        return view('admin.tours.categories.index', compact('tourCategories'));
     }
 
     /**
@@ -21,7 +23,7 @@ class NewsCategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.news-categories.create');
+        return view('admin.tours.categories.create');
     }
 
     /**
@@ -30,12 +32,12 @@ class NewsCategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:news_categories,name',
+            'name' => 'required|unique:tour_categories,name',
         ]);
 
         try {
-            NewsCategory::create($request->all());
-            return redirect()->route('news-categories.index')->with('success', 'News category created successfully');
+            TourCategory::create($request->all());
+            return redirect()->route('tour-categories.index')->with('success', 'Tour category created successfully');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
@@ -47,8 +49,8 @@ class NewsCategoryController extends Controller
     public function show(string $id)
     {
         try {
-            $newsCategory = NewsCategory::findOrFail($id);
-            return view('admin.news-categories.show', compact('newsCategory'));
+            $tourCategory = TourCategory::findOrFail($id);
+            return view('admin.tours.categories.show', compact('tourCategory'));
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
@@ -60,8 +62,8 @@ class NewsCategoryController extends Controller
     public function edit(string $id)
     {
         try {
-            $newsCategory = NewsCategory::findOrFail($id);
-            return view('admin.news-categories.edit', compact('newsCategory'));
+            $tourCategory = TourCategory::findOrFail($id);
+            return view('admin.tours.categories.edit', compact('tourCategory'));
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
@@ -73,13 +75,13 @@ class NewsCategoryController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name' => 'required|unique:news_categories,name,' . $id,
+            'name' => 'required|unique:tour_categories,name,' . $id,
         ]);
 
         try {
-            $newsCategory = NewsCategory::findOrFail($id);
-            $newsCategory->update($request->all());
-            return redirect()->route('news-categories.index')->with('success', 'News category updated successfully');
+            $tourCategory = TourCategory::findOrFail($id);
+            $tourCategory->update($request->all());
+            return redirect()->route('tour-categories.index')->with('success', 'Tour category updated successfully');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
@@ -91,9 +93,9 @@ class NewsCategoryController extends Controller
     public function destroy(string $id)
     {
         try {
-            $newsCategory = NewsCategory::findOrFail($id);
-            $newsCategory->delete();
-            return redirect()->route('news-categories.index')->with('success', 'News category deleted successfully');
+            $tourCategory = TourCategory::findOrFail($id);
+            $tourCategory->delete();
+            return redirect()->route('tour-categories.index')->with('success', 'Tour category deleted successfully');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }

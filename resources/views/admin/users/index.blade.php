@@ -7,18 +7,6 @@
         <div class="col-12">
             <div class="card mb-4 mx-4">
                 <div class="card-header pb-0">
-                    @if (session('success'))
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            {{ session('success') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    @endif
-                    @if (session('error'))
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            {{ session('error') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    @endif
                     <div class="d-flex flex-row justify-content-between">
                         <div>
                             <h5 class="mb-0">All Users</h5>
@@ -29,7 +17,7 @@
                                 <input type="text" name="search" class="form-control" placeholder="Search . . ." value="{{ request()->query('search') }}" onkeypress="if(event.keyCode == 13) { event.preventDefault(); this.form.submit(); }">
                             </div>
                         </form>
-                        <a href={{ route('users.create') }} class="btn btn-primary btn-sm">+&nbsp;Add User</a>
+                        <a href={{ route('users.create') }} class="btn bg-gradient-primary btn-sm">+&nbsp;Add User</a>
                     </div>
                 </div>
                 <div class="card-body px-0 pt-0 pb-2">
@@ -74,18 +62,18 @@
                                     </td>
                                     <td class="align-middle text-center text-sm">
                                         <div class="d-flex flex-row justify-content-center">
-                                            <a href="{{ route('users.edit', $user->id) }}" class="btn btn-link text-info px-3 mb-0">
+                                            <a href="{{ route('users.edit', $user->id) }}" class="btn btn-link text-info px-3 mb-0" title="Edit" data-bs-toggle="tooltip">
                                                 <i class="bx bx-edit-alt fs-5"></i>
                                             </a>
                                             <form action="{{ route('users.switch-status', $user->id) }}" method="POST">
                                                 @csrf
                                                 @method('PUT')
                                                 @if ($user->is_active)
-                                                    <button class="btn btn-link text-warning px-3 mb-0" type="submit">
+                                                    <button class="btn btn-link text-warning px-3 mb-0" type="submit" title="Deactivate" data-bs-toggle="tooltip">
                                                         <i class="bx bx-toggle-right fs-5"></i>
                                                     </button>
                                                 @else
-                                                    <button class="btn btn-link text-success px-3 mb-0" type="submit">
+                                                    <button class="btn btn-link text-success px-3 mb-0" type="submit" title="Activate" data-bs-toggle="tooltip">
                                                         <i class="bx bx-toggle-left fs-5"></i>
                                                     </button>
                                                 @endif
@@ -93,7 +81,7 @@
                                             <form action="{{ route('users.destroy', $user->id) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button class="btn btn-link text-danger px-2 mb-0" type="submit">
+                                                <button class="btn btn-link text-danger px-2 mb-0 delete-confirm" type="button" title="Delete" data-bs-toggle="tooltip">
                                                     <i class="bx bx-trash fs-5"></i>
                                                 </button>
                                             </form>

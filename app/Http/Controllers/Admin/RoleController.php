@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
@@ -37,8 +38,8 @@ class RoleController extends Controller
     {
         $request->validate([
             'name' => 'required|unique:roles,name',
-            'permissions' => 'required|array',
-            'permissions.*' => 'required|exists:permissions,id'
+            'permissions' => 'nullable|array',
+            'permissions.*' => 'exists:permissions,id'
         ]);
 
         try {
@@ -83,8 +84,8 @@ class RoleController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'permissions' => 'required|array',
-            'permissions.*' => 'required|exists:permissions,id'
+            'permissions' => 'nullable|array',
+            'permissions.*' => 'exists:permissions,id'
         ]);
 
         try {

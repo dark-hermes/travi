@@ -17,7 +17,7 @@ class NewsSeeder extends Seeder
         $news = [
             [
                 'title' => 'Cisande Sukabumi Tourism Village, Animal Husbandry Education-Based Tourism Village',
-                'news_category_id' => NewsCategory::where('name', 'News')->first()->id,
+                'news_category_id' => NewsCategory::where('name', 'Education')->first()->id,
                 'images' => [],
                 'content' => '
                     <p>Writer Ni Nyoman Wira Widyanti | KOMPAS.com Editor Ni Nyoman Wira Widyanti - Cisande Tourism Village is a tourist village in Sukabumi Regency, West Java, which has potential in terms of animal husbandry education. When visiting this tourist village, tourists can take part in various educational activities, some of which are cultivating ornamental fish and catfish. During his visit on Sunday (5/9/2021), the Minister of Tourism and Creative Economy Sandiaga Uno suggested that the livestock education tour be expanded. "There is already a fishery here, then there is also agro-tourism, but animal husbandry is not complete. Therefore, I donated a pair of sheep to the Cisande Tourism Village so that they become capital for livestock education tourism," said Sandiaga, quoted from an official statement received by Kompas.com, Monday (6/9/2021). Apart from participating in livestock education activities, tourists can also decorate kites, plant rice, and experience outbound activities in the form of flying fox, archery, river tubing, and camping at the camping ground.</p>
@@ -43,7 +43,7 @@ class NewsSeeder extends Seeder
             ],
             [
                 'title' => 'Carangsari Bali Tourism Village, a Village with 14 Tourist Attractions',
-                'news_category_id' => NewsCategory::where('name', 'News')->first()->id,
+                'news_category_id' => NewsCategory::where('name', 'Attractions')->first()->id,
                 'images' => ['https://asset.kompas.com/crops/87GEOvnuUSW06-NzTaHcIXCu6Wk=/0x0:1280x853/750x500/data/photo/2021/09/27/6151d6356be15.jpeg', 'https://asset.kompas.com/crops/7AXCB3SPPnOtYie6DKbnmyfg1WE=/2x0:1280x852/750x500/data/photo/2021/09/27/6151d5a11cbfc.jpeg', 'https://asset.kompas.com/crops/qW9Q6fLsMMZ7GL2xgSh2MHs0ePk=/0x0:1280x853/750x500/data/photo/2021/09/27/6151d5a1047da.jpeg', 'https://desawisatacarangsari.com/images/wisata/bali_cycling.jpg', 'https://desawisatacarangsari.com/images/wisata/rafting-true-bali.jpg'],
                 'content' => '
                     <p>KOMPAS.com - Carangsari Tourism Village in Petang District, Badung Regency, Bali, is one of the selected tourist villages in the top 50 Indonesian Tourism Village Awards (ADWI) 2021. ADWI 2021 is a competition held by the Ministry of Tourism and Creative Economy (Kemenparekraf) . A total of 50 of the best tourist villages from various provinces in Indonesia have been selected. The 50 tourist villages are also being visited by the Minister of Tourism and Creative Economy (Menparekraf) Sandiaga Uno and the Jury Council.</p>
@@ -55,16 +55,19 @@ class NewsSeeder extends Seeder
             ]
         ];
 
-        foreach ($news as $new) {
-            $newCreate = News::create([
-                'title' => $new['title'],
-                'news_category_id' => $new['news_category_id'],
-                'content' => $new['content'],
-            ]);
-            foreach ($new['images'] as $image) {
-                $newCreate->images()->create([
-                    'path' => $image,
+        $repeat = 5;
+        for ($i = 0; $i < $repeat; $i++) {
+            foreach ($news as $new) {
+                $newCreate = News::create([
+                    'title' => $new['title'],
+                    'news_category_id' => $new['news_category_id'],
+                    'content' => $new['content'],
                 ]);
+                foreach ($new['images'] as $image) {
+                    $newCreate->images()->create([
+                        'path' => $image,
+                    ]);
+                }
             }
         }
     }

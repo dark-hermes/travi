@@ -21,6 +21,6 @@ class NewsCategory extends Model
      */
     public function news(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(News::class);
+        return $this->hasMany(News::class, 'news_category_id');
     }
 }

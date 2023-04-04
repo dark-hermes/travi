@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('tour_category_id')->constrained('tour_categories')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('name')->unique();
             $table->string('slug')->unique()->nullable();
-            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

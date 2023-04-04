@@ -12,28 +12,10 @@
                 <form action="{{ route('employees.update-password', $employee->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-                    @if($errors->any())
-                        <div class="mt-3  alert alert-primary alert-dismissible fade show" role="alert">
-                            <span class="alert-text text-white">
-                            {{$errors->first()}}</span>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                                <i class="bx bx-x" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                    @endif
-                    @if(session('success'))
-                        <div class="m-3  alert alert-success alert-dismissible fade show" id="alert-success" role="alert">
-                            <span class="alert-text text-white">
-                            {{ session('success') }}</span>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                                <i class="bx bx-x" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                    @endif
 
                     {{-- Password --}}
                     <div class="form-group">
-                        <label for="password" class="form-control-label">{{ __('Password') }}</label>
+                        <label for="password" class="form-control-label required">{{ __('Password') }}</label>
                         <input type="password" name="password" id="password" class="form-control" placeholder="{{ __('Password') }}" value="{{ old('password') }}" required>
                         @error('password')
                             <span class="text-danger">{{ $message }}</span>
@@ -41,7 +23,7 @@
                     </div>
                     {{-- Confirm Password --}}
                     <div class="form-group">
-                        <label for="password_confirmation" class="form-control-label">{{ __('Confirm Password') }}</label>
+                        <label for="password_confirmation" class="form-control-label required">{{ __('Confirm Password') }}</label>
                         <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="{{ __('Confirm Password') }}" value="{{ old('password_confirmation') }}" required>
                         @error('password_confirmation')
                             <span class="text-danger">{{ $message }}</span>

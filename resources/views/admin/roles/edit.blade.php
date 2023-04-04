@@ -12,33 +12,16 @@
                 <form action="{{ route('roles.update', $role->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-                    @if($errors->any())
-                        <div class="mt-3  alert alert-primary alert-dismissible fade show" role="alert">
-                            <span class="alert-text text-white">
-                            {{$errors->first()}}</span>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                                <i class="fa fa-close" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                    @endif
-                    @if(session('success'))
-                        <div class="m-3  alert alert-success alert-dismissible fade show" id="alert-success" role="alert">
-                            <span class="alert-text text-white">
-                            {{ session('success') }}</span>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                                <i class="fa fa-close" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                    @endif
                     {{-- Name --}}
                     <div class="form-group">
-                        <label for="name" class="form-control-label">{{ __('Role Name') }}</label>
+                        <label for="name" class="form-control-label required">{{ __('Role Name') }}</label>
                         <input type="text" name="name" id="name" class="form-control" placeholder="{{ __('Role Name') }}" value="{{ $role->name }}" required>
                         @error('name')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                     {{-- Permissions --}}
+                    <label for="permissions" class="form-control-label">{{ __('Permissions') }}</label>
                     <div class="form-group">
                         @foreach($permissions as $permission)
                             <div class="form-check form-check-inline">

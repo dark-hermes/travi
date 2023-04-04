@@ -11,27 +11,9 @@
             <div class="card-body pt-4 p-3">
                 <form action="{{ route('employees.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    @if($errors->any())
-                        <div class="mt-3  alert alert-primary alert-dismissible fade show" role="alert">
-                            <span class="alert-text text-white">
-                            {{$errors->first()}}</span>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                                <i class="fa fa-close" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                    @endif
-                    @if(session('success'))
-                        <div class="m-3  alert alert-success alert-dismissible fade show" id="alert-success" role="alert">
-                            <span class="alert-text text-white">
-                            {{ session('success') }}</span>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                                <i class="fa fa-close" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                    @endif
                     {{-- Name --}}
                     <div class="form-group">
-                        <label for="name" class="form-control-label">{{ __('Name') }}</label>
+                        <label for="name" class="form-control-label required">{{ __('Name') }}</label>
                         <input type="text" name="name" id="name" class="form-control" placeholder="{{ __('Name') }}" value="{{ old('name') }}" required>
                         @error('name')
                             <span class="text-danger">{{ $message }}</span>
@@ -39,7 +21,7 @@
                     </div>
                     {{-- Email --}}
                     <div class="form-group">
-                        <label for="email" class="form-control-label">{{ __('Email') }}</label>
+                        <label for="email" class="form-control-label required">{{ __('Email') }}</label>
                         <input type="email" name="email" id="email" class="form-control" placeholder="{{ __('Email') }}" value="{{ old('email') }}" required>
                         @error('email')
                             <span class="text-danger">{{ $message }}</span>
@@ -47,7 +29,7 @@
                     </div>
                     {{-- Password --}}
                     <div class="form-group">
-                        <label for="password" class="form-control-label">{{ __('Password') }}</label>
+                        <label for="password" class="form-control-label required">{{ __('Password') }}</label>
                         <input type="password" name="password" id="password" class="form-control" placeholder="{{ __('Password') }}" value="{{ old('password') }}" required>
                         @error('password')
                             <span class="text-danger">{{ $message }}</span>
@@ -55,7 +37,7 @@
                     </div>
                     {{-- Confirm Password --}}
                     <div class="form-group">
-                        <label for="password_confirmation" class="form-control-label">{{ __('Confirm Password') }}</label>
+                        <label for="password_confirmation" class="form-control-label required">{{ __('Confirm Password') }}</label>
                         <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="{{ __('Confirm Password') }}" value="{{ old('password_confirmation') }}" required>
                         @error('password_confirmation')
                             <span class="text-danger">{{ $message }}</span>
@@ -63,7 +45,7 @@
                     </div>
                     {{-- Role --}}
                     <div class="form-group">
-                        <label for="role" class="form-control-label">{{ __('Role') }}</label>
+                        <label for="role" class="form-control-label required">{{ __('Role') }}</label>
                         <select name="role" id="role" class="form-control" required>
                             <option value="" selected disabled>{{ __('Select Role') }}</option>
                             @foreach ($roles as $role)

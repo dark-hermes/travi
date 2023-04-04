@@ -37,9 +37,6 @@ class Image extends Model
 
         $file->move(storage_path('app/public/' . $dir), $newName);
 
-        // $singular
-        //     ? $model->image()->create(['path' => 'storage/' . $dir . '/' . $newName])
-        //     : $model->images()->create(['path' => 'storage/' . $dir . '/' . $newName]);
         if ($singular) {
             if ($model->image) {
                 Image::purge($model->image);

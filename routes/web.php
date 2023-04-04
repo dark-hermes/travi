@@ -3,15 +3,19 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\TourController;
 use Illuminate\Support\Facades\Password;
 use App\Http\Controllers\ResetController;
 use App\Http\Controllers\InfoUserController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
+use App\Http\Controllers\Admin\NewsController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\TourCategoryController;
 use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\ChangePasswordController;
-use App\Http\Controllers\RoleController;
+use App\Http\Controllers\Admin\NewsCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +44,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('roles', RoleController::class);
 
     Route::resource('news-categories', NewsCategoryController::class);
+
+    Route::resource('news', NewsController::class);
+
+    Route::resource('tour-categories', TourCategoryController::class);
+
+    Route::get('tours/{slug}/images', [TourController::class, 'showImage'])->name('tours.images');
+    Route::post('tours/{id}/image', [TourController::class, 'storeImage'])->name('tours.store-image');
+    Route::delete('tours/{id}/image', [TourController::class, 'destroyImage'])->name('tours.destroy-image');
+    Route::resource('tours', TourController::class);
 
 	Route::get('dashboard', function () {
 		return view('dashboard');

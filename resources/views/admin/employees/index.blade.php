@@ -7,18 +7,6 @@
         <div class="col-12">
             <div class="card mb-4 mx-4">
                 <div class="card-header pb-0">
-                    @if (session('success'))
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            {{ session('success') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    @endif
-                    @if (session('error'))
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            {{ session('error') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    @endif
                     <div class="d-flex flex-row justify-content-between">
                         <div>
                             <h5 class="mb-0">All Employees</h5>
@@ -29,7 +17,7 @@
                                 <input type="text" name="search" class="form-control" placeholder="Search . . ." value="{{ request()->query('search') }}" onkeypress="if(event.keyCode == 13) { event.preventDefault(); this.form.submit(); }">
                             </div>
                         </form>
-                        <a href={{ route('employees.create') }} class="btn btn-primary btn-sm">+&nbsp;Add Employee</a>
+                        <a href={{ route('employees.create') }} class="btn bg-gradient-primary btn-sm">+&nbsp;Add Employee</a>
                     </div>
                 </div>
                 <div class="card-body px-0 pt-0 pb-2">

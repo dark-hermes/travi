@@ -25,16 +25,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    @if (env('IS_DEMO'))
-        <x-demo-metas></x-demo-metas>
-    @endif
-
-    {{-- <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png"> --}}
-    <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('assets/img/apple-icon.png') }}">
     {{-- <link rel="icon" type="image/png" href="../assets/img/favicon.png"> --}}
-    <link rel="icon" type="image/png" href="{{ asset('assets/img/favicon.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}">
     <title>
-        {{ config('app.name', 'Laravel') }}
+        {{ str()->title(str_replace('.', ' ', Route::currentRouteName())) }}
     </title>
     <!--     Fonts and icons     -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
@@ -50,9 +44,10 @@
     <!-- CSS Files -->
     <link id="pagestyle" href="{{ asset('assets/css/soft-ui-dashboard.css?v=1.0.3') }}" rel="stylesheet" />
     @vite(['resources/js/app.js', 'resources/css/app.css'])
+    @trixassets
 </head>
 
-<body class="g-sidenav-show  bg-gray-100 {{ (\Request::is('rtl') ? 'rtl' : (Request::is('virtual-reality') ? 'virtual-reality' : '')) }} ">
+<body class="g-sidenav-show  bg-gray-100 antialiased">
     @auth
     @yield('auth')
     @endauth
@@ -60,14 +55,55 @@
         @yield('guest')
     @endguest
 
-    @if(session()->has('success'))
-        <div x-data="{ show: true}"
-            x-init="setTimeout(() => show = false, 4000)"
-            x-show="show"
-            class="position-fixed bg-success rounded right-3 text-sm py-2 px-4">
-        <p class="m-0">{{ session('success')}}</p>
+    {{-- Spinner --}}
+    <div class="clearfix">
+        <div class="bg-white position-fixed top-0 start-50 translate-middle-x w-100 h-100" style="z-index: 9999" id="spinner">
+            <div class="spinner-border text-primary position-absolute top-50 start-50" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
+
+    {{-- Success and error alert --}}
+    @if (session('success'))
+        {{-- Autohide alert --}}
+        <div class="alert alert-success alert-dismissible fade show position-fixed top-2 start-50 translate-middle-x" role="alert" data-bs-autohide="true">
+            <div class="container">
+                <div class="alert-icon">
+                    <i class="bx bx-check"></i>
+                </div>
+                <strong>Success!</strong> {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><i class="bx bx-x"></i></button>
+            </div>
         </div>
     @endif
+
+    @if (session('error'))
+        {{-- Autohide alert --}}
+        <div class="alert alert-danger alert-dismissible fade show position-fixed top-2 start-50 translate-middle-x" role="alert" data-bs-autohide="true">
+            <div class="container">
+                <div class="alert-icon">
+                    <i class="bx bx-error"></i>
+                </div>
+                <strong>Error!</strong> {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><i class="bx bx-x"></i></button>
+            </div>
+        </div>
+    @endif
+
+    @if ($errors->any())
+        {{-- Autohide alert --}}
+        <div class="alert alert-danger alert-dismissible fade show position-fixed top-2 start-50 translate-middle-x" role="alert" data-bs-autohide="true">
+            <div class="container">
+                <div class="alert-icon">
+                    <i class="bx bx-error"></i>
+                </div>
+                <strong>Error!</strong> {{ $errors->first() }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><i class="bx bx-x"></i></button>
+            </div>
+        </div>
+    @endif
+
         <!--   Core JS Files   -->
     {{-- <script src="../assets/js/core/popper.min.js"></script> --}}
     <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>

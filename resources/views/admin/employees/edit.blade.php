@@ -35,27 +35,9 @@
                 <form action="{{ route('employees.update', $employee->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-                    @if($errors->any())
-                        <div class="mt-3  alert alert-primary alert-dismissible fade show" role="alert">
-                            <span class="alert-text text-white">
-                            {{$errors->first()}}</span>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                                <i class="fa fa-close" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                    @endif
-                    @if(session('success'))
-                        <div class="m-3  alert alert-success alert-dismissible fade show" id="alert-success" role="alert">
-                            <span class="alert-text text-white">
-                            {{ session('success') }}</span>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                                <i class="fa fa-close" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                    @endif
                     {{-- Name --}}
                     <div class="form-group">
-                        <label for="name" class="form-control-label">{{ __('Name') }}</label>
+                        <label for="name" class="form-control-label required">{{ __('Name') }}</label>
                         <input type="text" name="name" id="name" class="form-control" placeholder="ex: John Doe" value="{{ $employee->name }}" required>
                         @error('name')
                             <span class="text-danger">{{ $message }}</span>
@@ -63,7 +45,7 @@
                     </div>
                     {{-- Email --}}
                     <div class="form-group">
-                        <label for="email" class="form-control-label">{{ __('Email') }}</label>
+                        <label for="email" class="form-control-label required">{{ __('Email') }}</label>
                         <input type="email" name="email" id="email" class="form-control" placeholder="ex: johndoe@gmail.com" value="{{ $employee->email }}" required>
                         @error('email')
                             <span class="text-danger">{{ $message }}</span>
@@ -71,9 +53,8 @@
                     </div>
                     {{-- Roles --}}
                     <div class="form-group">
-                        <label for="roles" class="form-control-label">{{ __('Roles') }}</label>
+                        <label for="roles" class="form-control-label required">{{ __('Roles') }}</label>
                         <select name="role" id="role" class="form-control" required>
-                            <option value="" selected disabled>{{ __('Select Role') }}</option>
                             @foreach ($roles as $role)
                                 <option value="{{ $role->name }}" {{ $employee->hasRole($role->name) ? 'selected' : '' }}>{{ str()->title($role->name) }}</option>
                             @endforeach
@@ -84,7 +65,7 @@
                     </div>
                     {{-- Phone --}}
                     <div class="form-group">
-                        <label for="phone" class="form-control-label">{{ __('Phone') }}</label>
+                        <label for="phone" class="form-control-label required">{{ __('Phone') }}</label>
                         <input type="tel" name="phone" id="phone" class="form-control" placeholder="08xxxxxxxxxx" value="{{ $employee->phone }}" minlength="10" maxlength="15">
                         @error('phone')
                             <span class="text-danger">{{ $message }}</span>
@@ -92,7 +73,7 @@
                     </div>
                     {{-- Address --}}
                     <div class="form-group">
-                        <label for="address" class="form-control-label">{{ __('Address') }}</label>
+                        <label for="address" class="form-control-label required">{{ __('Address') }}</label>
                         <textarea name="address" id="address" class="form-control" placeholder="ex: Jl. Raya No. 1, Kec. Kecamatan, Kab. Kabupaten, Provinsi" rows="3">{{ $employee->address }}</textarea>
                         @error('address')
                             <span class="text-danger">{{ $message }}</span>
