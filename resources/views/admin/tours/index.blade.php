@@ -13,7 +13,9 @@
                     <input type="text" name="search" class="form-control" placeholder="Search . . ." value="{{ request()->query('search') }}" onkeypress="if(event.keyCode == 13) { event.preventDefault(); this.form.submit(); }">
                 </div>
             </form>
-            <a href={{ route('tours.create') }} class="btn bg-gradient-primary btn-sm">+&nbsp;Add Tour Object</a>
+            @can('tour-create')
+                <a href={{ route('tours.create') }} class="btn bg-gradient-primary btn-sm">+&nbsp;Add Tour Object</a>
+            @endcan
         </div>
         <div class="dropdown">
             <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
@@ -45,6 +47,9 @@
                                 {{ $tour->category->name }}
                             </a>
                             <h5 class="mb-0 text-dark text-sm">{{ $tour->name }}</h5>
+                            <p class="mb-1 text-xxs">
+                                <span class="text-secondary text-sm">{{ $tour->updated_at->diffForHumans() }}</span>
+                            </p>
                             <p class="mb-2 text-sm">
                                 {{ $tour->short_description }}
                             </p>

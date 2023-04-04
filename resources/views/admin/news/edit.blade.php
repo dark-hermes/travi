@@ -43,7 +43,7 @@
                         </div>
                         {{-- Back and Update button --}}
                         <div class="d-block text-end mt-3 mb-2">
-                            <a href="{{ route('news.show', $news->id) }}" class="btn bg-gradient-secondary w-25 mx-2">{{ __('Back') }}</a>
+                            <a href="{{ route('news.show', $news->slug) }}" class="btn bg-gradient-secondary w-25 mx-2">{{ __('Back') }}</a>
                             <button type="submit" class="btn bg-gradient-primary w-25 mx-2">{{ __('Update') }}</button>
                         </div>
                     </div>

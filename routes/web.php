@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TourController;
 use Illuminate\Support\Facades\Password;
+use App\Http\Controllers\LodgeController;
 use App\Http\Controllers\ResetController;
 use App\Http\Controllers\InfoUserController;
 use App\Http\Controllers\RegisterController;
@@ -53,6 +54,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('tours/{id}/image', [TourController::class, 'storeImage'])->name('tours.store-image');
     Route::delete('tours/{id}/image', [TourController::class, 'destroyImage'])->name('tours.destroy-image');
     Route::resource('tours', TourController::class);
+
+    Route::get('lodges/{slug}/images', [LodgeController::class, 'showImage'])->name('lodges.images');
+    Route::post('lodges/{id}/image', [LodgeController::class, 'storeImage'])->name('lodges.store-image');
+    Route::delete('lodges/{id}/image', [LodgeController::class, 'destroyImage'])->name('lodges.destroy-image');
+    Route::resource('lodges', LodgeController::class);
 
 	Route::get('dashboard', function () {
 		return view('dashboard');

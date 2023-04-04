@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Facility;
-use App\Models\Tour;
 use App\Models\Image;
-use App\Models\TourCategory;
+use App\Models\Lodge;
+use App\Models\Facility;
 use Illuminate\Http\Request;
 
-class TourController extends Controller
+class LodgeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,12 +15,10 @@ class TourController extends Controller
     public function index(Request $request)
     {
         $search = $request->query('search');
-        $category = $request->query('category');
 
-        $tours = Tour::orderBy('updated_at', 'desc')
+        $lodges = Lodge::orderBy('updated_at', 'desc')
             ->when($search, function ($query) use ($search) {
                 return $query->where('name', 'like', "%{$search}%")
-                    ->orWhereRelation('category', 'name', 'like', "%{$search}%")
                     ->orWhereHas('trixRichText', function ($query) use ($search) {
                         return $query->whereFullText('content', $search);
                     })
@@ -31,13 +28,9 @@ class TourController extends Controller
                         });
                     });
             })
-            ->when($category, function ($query) use ($category) {
-                return $query->whereRelation('category', 'name', $category);
-            })
             ->paginate(9);
 
-        $categories = Tour::select('tour_category_id')->distinct()->get()->pluck('category.name');
-        return view('admin.tours.index', compact('tours', 'categories'));
+        return view('admin.lodges.index', compact('lodges'));
     }
 
     /**
@@ -46,8 +39,7 @@ class TourController extends Controller
     public function create()
     {
         try {
-            $categories = TourCategory::orderBy('name')->get();
-            return view('admin.tours.create', compact('categories'));
+            return view('admin.lodges.create');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
@@ -60,32 +52,30 @@ class TourController extends Controller
     {
         $request->validate([
             'name' => 'required|min:3|max:60',
-            'tour-trixFields' => 'required',
+            'lodge-trixFields' => 'required',
             'facility-trixFields' => 'required',
-            'tour_category_id' => 'required|exists:tour_categories,id',
             'images' => 'nullable|array|max:5',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ], [
-            'tour-trixFields.required' => 'The tour description field is required.',
+            'lodge-trixFields.required' => 'The lodge description field is required.',
             'facility-trixFields.required' => 'The facility description field is required.',
         ]);
 
         try {
-            $tour = Tour::create([
+            $lodge = Lodge::create([
                 'name' => $request->name,
-                'tour_category_id' => $request->tour_category_id,
-                'tour-trixFields' => $request->input('tour-trixFields'),
+                'lodge-trixFields' => $request->input('lodge-trixFields'),
             ]);
-            $tour->facility()->create([
-                'facility-trixFields' => $request->input('facility-trixFields')
+            $lodge->facility()->create([
+                'facility-trixFields' => $request->input('facility-trixFields'),
             ]);
 
-            $dir = "tours/{$tour->id}";
+            $dir = "lodges/{$lodge->id}";
             foreach ($request->file('images') as $image) {
-                Image::store($image, $dir, $tour);
+                Image::store($image, $dir, $lodge);
             }
 
-            return redirect()->route('tours.index')->with('success', 'Tour created successfully');
+            return redirect()->route('lodges.index')->with('success', 'Lodge created successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
@@ -99,10 +89,10 @@ class TourController extends Controller
         ]);
 
         try {
-            $tour = Tour::findOrFail($id);
-            $dir = "tours/{$tour->id}";
+            $lodge = Lodge::findOrFail($id);
+            $dir = "lodge/{$lodge->id}";
             foreach ($request->file('images') as $image) {
-                Image::store($image, $dir, $tour);
+                Image::store($image, $dir, $lodge);
             }
 
             return redirect()->back()->with('success', 'Image uploaded successfully');
@@ -117,8 +107,8 @@ class TourController extends Controller
     public function show(string $slug)
     {
         try {
-            $tour = Tour::where('slug', $slug)->firstOrFail();
-            return view('admin.tours.show', compact('tour'));
+            $lodge = Lodge::where('slug', $slug)->firstOrFail();
+            return view('admin.lodges.show', compact('lodge'));
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
@@ -127,8 +117,8 @@ class TourController extends Controller
     public function showImage(string $slug)
     {
         try {
-            $tour = Tour::where('slug', $slug)->firstOrFail();
-            return view('admin.tours.show-image', compact('tour'));
+            $lodge = Lodge::where('slug', $slug)->firstOrFail();
+            return view('admin.lodges.show-image', compact('lodge'));
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
@@ -140,9 +130,8 @@ class TourController extends Controller
     public function edit(string $slug)
     {
         try {
-            $tour = Tour::where('slug', $slug)->firstOrFail();
-            $categories = TourCategory::orderBy('name')->get();
-            return view('admin.tours.edit', compact('tour', 'categories'));
+            $lodge = Lodge::where('slug', $slug)->firstOrFail();
+            return view('admin.lodges.edit', compact('lodge'));
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
@@ -155,28 +144,28 @@ class TourController extends Controller
     {
         $request->validate([
             'name' => 'required|min:3|max:60',
-            'tour-trixFields' => 'required',
+            'lodge-trixFields' => 'required',
             'facility-trixFields' => 'required',
-            'tour_category_id' => 'required|exists:tour_categories,id',
+            'images' => 'nullable|array|max:5',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ], [
-            'tour-trixFields.required' => 'The tour description field is required.',
+            'lodge-trixFields.required' => 'The lodge description field is required.',
             'facility-trixFields.required' => 'The facility description field is required.',
         ]);
 
         try {
-            $tour = Tour::findOrFail($id);
-            $tour->update([
+            $lodge = Lodge::findOrFail($id);
+            $lodge->update([
                 'name' => $request->name,
-                'tour_category_id' => $request->tour_category_id,
-                'tour-trixFields' => $request->input('tour-trixFields'),
+                'lodge-trixFields' => $request->input('lodge-trixFields'),
             ]);
-            $facility = Facility::where('facilityable_type', 'App\Models\Tour')
-                ->where('facilityable_id', $tour->id)
+            $facility = Facility::where('facilityable_type', 'App\Models\Lodge')
+                ->where('facilityable_id', $lodge->id)
                 ->firstOrFail();
             $facility->update([
-                'facility-trixFields' => $request->input('facility-trixFields')
+                'facility-trixFields' => $request->input('facility-trixFields'),
             ]);
-            return redirect()->route('tours.show', $tour->slug)->with('success', 'Tour updated successfully');
+            return redirect()->route('lodges.show', $lodge->slug)->with('success', 'Lodge updated successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
@@ -188,9 +177,8 @@ class TourController extends Controller
     public function destroy(string $id)
     {
         try {
-            $tour = Tour::findOrFail($id);
-            $tour->delete();
-            return redirect()->route('tours.index')->with('success', 'Tour deleted successfully');
+            Lodge::findOrFail($id)->delete();
+            return redirect()->route('lodges.index')->with('success', 'Lodge deleted successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
@@ -201,7 +189,7 @@ class TourController extends Controller
         try {
             $image = Image::findOrFail($id);
             Image::purge($image);
-            return redirect()->back()->with('success', 'Image deleted successfully');
+            return redirect()->back()->with('success', 'Image deleted successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }

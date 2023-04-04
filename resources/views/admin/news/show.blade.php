@@ -15,22 +15,20 @@
                             <h3 class="mb-0">{{ $news->title }}</h3>
                         </div>
                         <div class="d-flex align-items-center mt-3">
-                            <span>
-                                <a href="{{ route('news.edit', $news->slug) }}" class="btn btn-link text-info p-0 m-0 align-baseline">{{ __('Edit') }}</a>
-                            </span>
+                            <a href="{{ route('news.edit', $news->slug) }}" class="btn btn-sm bg-gradient-info">{{ __('Edit') }}</a>
                             {{ __('|') }}
                             <form action="{{ route('news.destroy', $news->id) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <button type="button" class="btn btn-link text-danger p-0 m-0 align-baseline delete-confirm">{{ __('Delete') }}</button>
+                                <button type="button" class="btn btn-sm bg-gradient-danger delete-confirm mx-2">{{ __('Delete') }}</button>
                             </form>
                         </div>
                         <p class="text-sm mb-0 mt-3">
-                            <i class="fas fa-calendar-alt"></i>
+                            <i class="bx bx-calendar"></i>
                             {{ $news->created_at->format('d M Y H:i') }}
                         </p>
                         <a href="{{ route('news.index', ['category' => $news->category->id]) }}" class="text-sm mb-0 mt-3">
-                            <i class="fas fa-tags"></i>
+                            <i class="bx bx-tag"></i>
                             {{ $news->category->name }}
                         </a>
                     </div>

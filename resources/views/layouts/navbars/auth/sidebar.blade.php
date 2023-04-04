@@ -50,12 +50,12 @@
             @endcan
             @can('lodge-list')
                 <li class="nav-item">
-                    <a class="nav-link {{ Route::currentRouteName() == 'lodges.index' ? 'active' : '' }}"
-                        href="{{ route('dashboard') }}">
+                    <a class="nav-link {{ in_array(request()->route()->getName(),['lodges.index', 'lodges.create', 'lodges.edit']) ? 'active' : '' }}"
+                        href="{{ route('lodges.index') }}">
                         <div
                             class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i style="font-size: 1rem;" class="bx bx-home ps-2 pe-2 text-center
-                            {{ in_array(request()->route()->getName(),['lodges']) ? 'text-white' : 'text-dark' }}"></i>
+                            {{ in_array(request()->route()->getName(),['lodges.index', 'lodges.create', 'lodges.edit']) ? 'text-white' : 'text-dark' }}"></i>
                         </div>
                         <span class="nav-link-text ms-1">Lodge</span>
                     </a>
