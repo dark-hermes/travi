@@ -19,8 +19,12 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             UserSeeder::class,
             NewsCategorySeeder::class,
-            // NewsSeeder::class,
+            NewsSeeder::class,
             TourCategorySeeder::class,
+            TourSeeder::class,
+            LodgeSeeder::class,
+            TourPackageSeeder::class,
+            ReservationSeeder::class,
         ]);
     }
 }

@@ -50,13 +50,17 @@
                                 @enderror
                             </div>
                         </div>
+                        {{-- Image management link --}}
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <a href="{{ route('tours.images', $tour->slug) }}" class="btn btn-sm bg-gradient-primary">{{ __('Manage Images') }}</a>
+                            </div>
+                        </div>
                         {{-- Back and Update button --}}
                         <div class="d-block text-end mt-3 mb-2">
-                            {{-- Image management link --}}
-                            <a href="{{ route('tours.images', $tour->slug) }}" class="btn btn-sm btn-link">{{ __('Manage Images') }}</a>
                             {{-- Back and Update button --}}
                             <a href="{{ route('tours.show', $tour->slug) }}" class="btn bg-gradient-secondary w-25 mx-2">{{ __('Back') }}</a>
-                            <button type="submit" class="btn bg-gradient-primary w-25 mx-2">{{ __('Update') }}</button>
+                            <button type="submit" class="btn bg-gradient-primary w-30 mx-2">{{ __('Update') }}</button>
                         </div>
                     </div>
                 </form>

@@ -9,6 +9,14 @@ use App\Models\NewsCategory;
 
 class NewsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:news-list|news-create|news-edit|news-delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:news-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:news-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:news-delete', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      * @param Request $request

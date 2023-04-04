@@ -34,7 +34,7 @@
                     {{-- Back and Update button --}}
                     <div class="d-block text-end">
                         <a href="{{ route('roles.index') }}" class="btn bg-gradient-dark w-25 mx-2 mb-2">{{ __('Back') }}</a>
-                        <button type="submit" class="btn bg-gradient-primary w-25 mx-2 mb-2">{{ __('Create') }}</button>
+                        <button type="submit" class="btn bg-gradient-primary w-30 mx-2 mb-2">{{ __('Create') }}</button>
                     </div>
                 </form>
             </div>

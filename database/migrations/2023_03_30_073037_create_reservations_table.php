@@ -19,7 +19,8 @@ return new class extends Migration
             $table->unsignedInteger('price');
             $table->unsignedInteger('quantity')->default(1);
             $table->unsignedTinyInteger('discount')->default(0)->max(100);
-            $table->string('evidence')->nullable();
+            $table->string('payment_evidence')->nullable();
+            $table->datetime('payment_date')->nullable();
             $table->enum('status', ['pending', 'paid', 'canceled', 'finished'])->default('pending');
             $table->timestamps();
         });

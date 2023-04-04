@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\Image;
 use App\Models\Lodge;
 use App\Models\Facility;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class LodgeController extends Controller
 {
@@ -28,7 +29,7 @@ class LodgeController extends Controller
                         });
                     });
             })
-            ->paginate(9);
+            ->paginate(8);
 
         return view('admin.lodges.index', compact('lodges'));
     }

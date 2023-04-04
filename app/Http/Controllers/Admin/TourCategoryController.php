@@ -1,12 +1,21 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\TourCategory;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class TourCategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:tour-category-list|tour-category-create|tour-category-edit|tour-category-delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:tour-category-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:tour-category-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:tour-category-delete', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      */

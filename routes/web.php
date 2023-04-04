@@ -3,20 +3,22 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\TourController;
 use Illuminate\Support\Facades\Password;
-use App\Http\Controllers\LodgeController;
 use App\Http\Controllers\ResetController;
 use App\Http\Controllers\InfoUserController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\TourController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\TourCategoryController;
+use App\Http\Controllers\Admin\LodgeController;
 use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\ChangePasswordController;
+use App\Http\Controllers\Admin\ReservationController;
+use App\Http\Controllers\Admin\TourPackageController;
 use App\Http\Controllers\Admin\NewsCategoryController;
+use App\Http\Controllers\Admin\TourCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +32,8 @@ use App\Http\Controllers\Admin\NewsCategoryController;
 */
 
 Route::group(['middleware' => 'auth'], function () {
+    Route::get('users/profile', [UserController::class, 'editProfile'])->name('users.edit-profile');
+    Route::put('users/update-profile', [UserController::class, 'updateProfile'])->name('users.update-profile');
     Route::get('users/{id}/edit-password', [UserController::class, 'editPassword'])->name('users.edit-password');
     Route::put('users/{id}/update-password', [UserController::class, 'updatePassword'])->name('users.update-password');
     Route::post('users/{id}/image', [UserController::class, 'storeImage'])->name('users.store-image');
@@ -59,6 +63,17 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('lodges/{id}/image', [LodgeController::class, 'storeImage'])->name('lodges.store-image');
     Route::delete('lodges/{id}/image', [LodgeController::class, 'destroyImage'])->name('lodges.destroy-image');
     Route::resource('lodges', LodgeController::class);
+
+    Route::get('tour-packages/{slug}/images', [TourPackageController::class, 'showImage'])->name('tour-packages.images');
+    Route::post('tour-packages/{id}/image', [TourPackageController::class, 'storeImage'])->name('tour-packages.store-image');
+    Route::delete('tour-packages/{id}/image', [TourPackageController::class, 'destroyImage'])->name('tour-packages.destroy-image');
+    Route::resource('tour-packages', TourPackageController::class);
+
+    Route::get('reservations/{tour_package_id}/create', [ReservationController::class, 'createReservation'])->name('reservations.create-reservation');
+    Route::post('reservations/{tour_package_id}/store', [ReservationController::class, 'storeReservation'])->name('reservations.store-reservation');
+    Route::post('reservations/{id}/upload-payment', [ReservationController::class, 'uploadPayment'])->name('reservations.upload-payment');
+    Route::put('reservations/{id}/cancel-reservation', [ReservationController::class, 'cancelReservation'])->name('reservations.cancel-reservation');
+    Route::resource('reservations', ReservationController::class);
 
 	Route::get('dashboard', function () {
 		return view('dashboard');

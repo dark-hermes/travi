@@ -6,6 +6,5 @@
         @yield('content')
     @else
         @yield('content')
-        @include('layouts.footers.guest.footer')
     @endif
 @endsection

@@ -13,10 +13,10 @@
                     @csrf
                     @method('PUT')
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="mb-3">
-                                <label for="name" class="form-label required">{{ __('Title') }}</label>
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter Title" required maxlength="60" minlength="3" value="{{ $lodge->name }}">
+                                <label for="name" class="form-label required">{{ __('Name') }}</label>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" required maxlength="60" minlength="3" value="{{ $lodge->name }}">
                                 @error('name')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -46,7 +46,7 @@
                             <a href="{{ route('lodges.images', $lodge->slug) }}" class="btn btn-sm btn-link">{{ __('Manage Images') }}</a>
                             {{-- Back and Update button --}}
                             <a href="{{ route('lodges.show', $lodge->slug) }}" class="btn bg-gradient-secondary w-25 mx-2">{{ __('Back') }}</a>
-                            <button type="submit" class="btn bg-gradient-primary w-25 mx-2">{{ __('Update') }}</button>
+                            <button type="submit" class="btn bg-gradient-primary w-30 mx-2">{{ __('Update') }}</button>
                         </div>
                     </div>
                 </form>

@@ -7,17 +7,17 @@
             <div>
                 <h5 class="mb-0">All Tour Objects</h5>
             </div>
-            <form action="{{ route('tours.index') }}" method="GET">
-                <div class="input-group-sm">
-                    {{-- Submit when enter pressed --}}
-                    <input type="text" name="search" class="form-control" placeholder="Search . . ." value="{{ request()->query('search') }}" onkeypress="if(event.keyCode == 13) { event.preventDefault(); this.form.submit(); }">
-                </div>
-            </form>
             @can('tour-create')
-                <a href={{ route('tours.create') }} class="btn bg-gradient-primary btn-sm">+&nbsp;Add Tour Object</a>
+                <a href={{ route('tours.create') }} class="btn bg-gradient-primary btn-sm">+&nbsp;Add</a>
             @endcan
         </div>
-        <div class="dropdown">
+        <form action="{{ route('tours.index') }}" method="GET">
+            <div class="input-group-sm">
+                {{-- Submit when enter pressed --}}
+                <input type="text" name="search" class="form-control" placeholder="Search . . ." value="{{ request()->query('search') }}" onkeypress="if(event.keyCode == 13) { event.preventDefault(); this.form.submit(); }">
+            </div>
+        </form>
+        <div class="dropdown mt-2">
             <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                 {{ request()->query('category') ? request()->query('category') : 'All Categories' }}
             </button>

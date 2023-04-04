@@ -59,6 +59,8 @@ class PermissionSeeder extends Seeder
             'reservation-create',
             'reservation-edit',
             'reservation-delete',
+            'reservation-payment',
+            'reservation-cancel',
 
             'employee-list',
             'employee-create',

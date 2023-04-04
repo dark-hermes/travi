@@ -11,7 +11,7 @@
                         <div>
                             <h5 class="mb-0">All Roles</h5>
                         </div>
-                        <a href={{ route('roles.create') }} class="btn bg-gradient-primary btn-sm">+&nbsp;Add Role</a>
+                        <a href={{ route('roles.create') }} class="btn bg-gradient-primary btn-sm">+&nbsp;Add</a>
                     </div>
                 </div>
                 <div class="card-body px-0 pt-0 pb-2">

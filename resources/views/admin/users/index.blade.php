@@ -11,14 +11,14 @@
                         <div>
                             <h5 class="mb-0">All Users</h5>
                         </div>
-                        <form action="{{ route('users.index') }}" method="GET">
-                            <div class="input-group-sm">
-                                {{-- Submit when enter pressed --}}
-                                <input type="text" name="search" class="form-control" placeholder="Search . . ." value="{{ request()->query('search') }}" onkeypress="if(event.keyCode == 13) { event.preventDefault(); this.form.submit(); }">
-                            </div>
-                        </form>
-                        <a href={{ route('users.create') }} class="btn bg-gradient-primary btn-sm">+&nbsp;Add User</a>
+                        <a href={{ route('users.create') }} class="btn bg-gradient-primary btn-sm">+&nbsp;Add</a>
                     </div>
+                    <form action="{{ route('users.index') }}" method="GET">
+                        <div class="input-group-sm">
+                            {{-- Submit when enter pressed --}}
+                            <input type="text" name="search" class="form-control" placeholder="Search . . ." value="{{ request()->query('search') }}" onkeypress="if(event.keyCode == 13) { event.preventDefault(); this.form.submit(); }">
+                        </div>
+                    </form>
                 </div>
                 <div class="card-body px-0 pt-0 pb-2">
                     <div class="table-responsive p-0">

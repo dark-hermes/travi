@@ -36,12 +36,12 @@
                         </div>
                         <hr class="dark mt-2 mb-4">
                         {{-- Carousel --}}
-                        <div id="carouselExampleControls" class="carousel slide w-100 border-radius-sm" data-bs-ride="carousel" style="background-color: rgba(0, 0, 0, 0.08);">
+                        <div id="carouselExampleControls" class="carousel slide w-100 border-radius-lg" data-bs-ride="carousel" style="background-color: rgba(0, 0, 0, 0.08);">
                             {{-- Carousel items --}}
                             <div class="carousel-inner">
                                 @foreach ($lodge->images as $image)
                                     <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
-                                        <img src="{{ url($image->path) }}" class="d-block w-100" alt="..." style="height: 480px; object-fit: scale-down;">
+                                        <img src="{{ url($image->path) }}" class="d-block w-100" alt="..." style="height: 24rem; object-fit: scale-down;">
                                     </div>
                                 @endforeach
                             </div>
@@ -70,7 +70,7 @@
                             </li>
                         </ul>
                         {{-- Tab contents --}}
-                        <div class="tab-content" id="desc-content">
+                        <div class="tab-content pt-3" id="desc-content">
                             <div class="tab-pane fade show active" id="facility" role="tabpanel" aria-labelledby="facility-tab">
                                 {!! $lodge->facility->trixRichText->first()->content !!}
                             </div>

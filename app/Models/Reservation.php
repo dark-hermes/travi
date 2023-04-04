@@ -18,9 +18,9 @@ class Reservation extends Model
         'date',
         'quantity',
         'price',
-        'quantity',
         'discount',
-        'evidence',
+        'payment_evidence',
+        'payment_date',
         'status'
     ];
 
@@ -28,9 +28,18 @@ class Reservation extends Model
      * @var array<int, string>
      */
     protected $appends = [
+        'subtotal_price',
         'discount_amount',
         'total_price',
     ];
+
+    /**
+     * @return float The subtotal price of the product.
+     */
+    public function getSubtotalPriceAttribute(): float
+    {
+        return $this->price * $this->quantity;
+    }
 
     /**
      * Return the product's price multiplied by the discount divided by 100.
@@ -39,7 +48,7 @@ class Reservation extends Model
      */
     public function getDiscountAmountAttribute(): float
     {
-        return $this->price * $this->discount / 100;
+        return $this->subtotal_price * $this->discount / 100;
     }
 
     /**
@@ -49,7 +58,7 @@ class Reservation extends Model
      */
     public function getTotalPriceAttribute(): float
     {
-        return $this->price - $this->discount_amount;
+        return $this->subtotal_price - $this->discount_amount;
     }
 
     /**

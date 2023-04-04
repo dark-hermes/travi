@@ -15,13 +15,16 @@
                             <h3 class="mb-0">{{ $news->title }}</h3>
                         </div>
                         <div class="d-flex align-items-center mt-3">
-                            <a href="{{ route('news.edit', $news->slug) }}" class="btn btn-sm bg-gradient-info">{{ __('Edit') }}</a>
-                            {{ __('|') }}
-                            <form action="{{ route('news.destroy', $news->id) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="button" class="btn btn-sm bg-gradient-danger delete-confirm mx-2">{{ __('Delete') }}</button>
-                            </form>
+                            @can('news-edit')
+                                <a href="{{ route('news.edit', $news->slug) }}" class="btn btn-sm bg-gradient-info">{{ __('Edit') }}</a>
+                            @endcan
+                            @can('news-delete')
+                                <form action="{{ route('news.destroy', $news->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="button" class="btn btn-sm bg-gradient-danger delete-confirm mx-2">{{ __('Delete') }}</button>
+                                </form>
+                            @endcan
                         </div>
                         <p class="text-sm mb-0 mt-3">
                             <i class="bx bx-calendar"></i>

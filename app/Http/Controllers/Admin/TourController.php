@@ -1,15 +1,24 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\Facility;
 use App\Models\Tour;
 use App\Models\Image;
+use App\Models\Facility;
 use App\Models\TourCategory;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class TourController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:tour-list|tour-create|tour-edit|tour-delete', ['only' => ['index', 'show', 'showImage']]);
+        $this->middleware('permission:tour-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:tour-edit', ['only' => ['edit', 'update', 'storeImage', 'destroyImage']]);
+        $this->middleware('permission:tour-delete', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      */

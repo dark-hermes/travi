@@ -46,7 +46,7 @@
                         {{-- Back and Update button --}}
                         <div class="d-block text-end mt-3 mb-2">
                             <a href="{{ route('news.index') }}" class="btn bg-gradient-dark w-25 mx-2">{{ __('Back') }}</a>
-                            <button type="submit" class="btn bg-gradient-primary w-25 mx-2">{{ __('Create') }}</button>
+                            <button type="submit" class="btn bg-gradient-primary w-30 mx-2">{{ __('Create') }}</button>
                         </div>
                     </div>
                 </form>

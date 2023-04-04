@@ -8,6 +8,14 @@ use App\Http\Controllers\Controller;
 
 class NewsCategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:news-category-list|news-category-create|news-category-edit|news-category-delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:news-category-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:news-category-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:news-category-delete', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      */

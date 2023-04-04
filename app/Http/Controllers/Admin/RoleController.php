@@ -9,6 +9,17 @@ use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {
+    public $defaultRole;
+
+    public function __construct()
+    {
+        $this->defaultRole = config('permission.default_role');
+        $this->middleware('permission:role-list|role-create|role-edit|role-delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:role-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:role-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:role-delete', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -90,6 +101,11 @@ class RoleController extends Controller
 
         try {
             $role = Role::findOrFail($id);
+
+            if (in_array($role->name, $this->defaultRole) && $request->name != $role->name) {
+                return redirect()->back()->with('error', 'You cannot edit default roles name: ' . implode(', ', $this->defaultRole));
+            }
+
             $role->syncPermissions($request->permissions);
             return redirect()->route('roles.index')->with('success', 'Role updated successfully');
         } catch (\Exception $e) {
@@ -103,10 +119,9 @@ class RoleController extends Controller
     public function destroy(string $id)
     {
         try {
-            $defaultRole = ['superadmin', 'admin', 'treasurer', 'customer', 'owner'];
             $role = Role::findOrFail($id);
-            if (in_array($role->name, $defaultRole)) {
-                return redirect()->back()->with('error', 'You cannot delete default roles: ' . implode(', ', $defaultRole));
+            if (in_array($role->name, $this->defaultRole)) {
+                return redirect()->back()->with('error', 'You cannot delete default roles: ' . implode(', ', $this->defaultRole));
             }
             $role->delete();
             return redirect()->route('roles.index')->with('success', 'Role deleted successfully');

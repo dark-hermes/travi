@@ -51,18 +51,6 @@
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-                    {{-- Roles --}}
-                    <div class="form-group">
-                        <label for="roles" class="form-control-label required">{{ __('Roles') }}</label>
-                        <select name="role" id="role" class="form-control" required>
-                            @foreach ($roles as $role)
-                                <option value="{{ $role->name }}" {{ $user->hasRole($role->name) ? 'selected' : '' }}>{{ str()->title($role->name) }}</option>
-                            @endforeach
-                        </select>
-                        @error('role')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
                     {{-- Phone --}}
                     <div class="form-group">
                         <label for="phone" class="form-control-label required">{{ __('Phone') }}</label>

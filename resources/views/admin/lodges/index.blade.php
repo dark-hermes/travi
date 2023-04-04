@@ -7,16 +7,16 @@
             <div>
                 <h5 class="mb-0">All Available Lodges</h5>
             </div>
-            <form action="{{ route('tours.index') }}" method="GET">
-                <div class="input-group-sm">
-                    {{-- Submit when enter pressed --}}
-                    <input type="text" name="search" class="form-control" placeholder="Search . . ." value="{{ request()->query('search') }}" onkeypress="if(event.keyCode == 13) { event.preventDefault(); this.form.submit(); }">
-                </div>
-            </form>
             @can('lodge-create')
                 <a href={{ route('lodges.create') }} class="btn bg-gradient-primary btn-sm">+&nbsp;Add Lodge</a>
             @endcan
         </div>
+        <form action="{{ route('lodges.index') }}" method="GET">
+            <div class="input-group-sm">
+                {{-- Submit when enter pressed --}}
+                <input type="text" name="search" class="form-control" placeholder="Search . . ." value="{{ request()->query('search') }}" onkeypress="if(event.keyCode == 13) { event.preventDefault(); this.form.submit(); }">
+            </div>
+        </form>
 
         <div class="row">
             @foreach ($lodges as $lodge)

@@ -20,7 +20,7 @@
                     <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
                         {{-- User profile --}}
                         <li class="mb-2">
-                            <a class="dropdown-item border-radius-md" href="{{ route('profile') }}">
+                            <a class="dropdown-item border-radius-md" href="{{ route('users.edit-profile') }}">
                                 <div class="d-flex py-1">
                                     <div class="my-auto">
                                         <img src="{{ auth()->user()->image_path }}" class="avatar avatar-sm  me-3 ">
@@ -52,6 +52,15 @@
                             </a>
                         </li>
                     </ul>
+                    <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+                        <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
+                        <div class="sidenav-toggler-inner">
+                            <i class="sidenav-toggler-line"></i>
+                            <i class="sidenav-toggler-line"></i>
+                            <i class="sidenav-toggler-line"></i>
+                        </div>
+                        </a>
+                    </li>
                 </li>
             </ul>
         </div>

@@ -158,4 +158,6 @@ return [
 
         'store' => 'default',
     ],
+
+    'default_role' =>  ['superadmin', 'admin', 'treasurer', 'customer', 'owner'],
 ];

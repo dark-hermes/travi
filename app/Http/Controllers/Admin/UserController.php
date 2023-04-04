@@ -94,9 +94,9 @@ class UserController extends Controller
             $user = User::findOrFail($id);
             $dir = 'avatars';
             $image = Image::store($request->file('image'), $dir, $user, true);
-            return redirect()->route('users.edit', $user->id)->with('success', 'Image uploaded successfully');
+            return redirect()->back()->with('success', 'Image uploaded successfully');
         } catch (\Exception $e) {
-            return redirect()->route('users.index')->with('error', $e->getMessage());
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
 
@@ -215,6 +215,39 @@ class UserController extends Controller
                 'password' => bcrypt($request->password)
             ]);
             return back()->with('success', 'Password updated successfully');
+        } catch (\Exception $e) {
+            return redirect()->route('users.index')->with('error', $e->getMessage());
+        }
+    }
+
+    public function editProfile()
+    {
+        try {
+            $user = User::findOrFail(auth()->id());
+            return view('admin.users.edit-profile', compact('user'));
+        } catch (\Exception $e) {
+            return redirect()->route('users.index')->with('error', $e->getMessage());
+        }
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|string|min:3|max:255',
+            'email' => 'required|email|unique:users,email,' . auth()->id(),
+            'phone' => 'nullable|string|min:10|max:255|unique:users,phone,' . auth()->id(),
+            'address' => 'nullable|string',
+        ]);
+
+        try {
+            $user = User::findOrFail(auth()->id());
+            $user->update([
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'address' => $request->address,
+            ]);
+            return back()->with('success', 'Profile updated successfully');
         } catch (\Exception $e) {
             return redirect()->route('users.index')->with('error', $e->getMessage());
         }

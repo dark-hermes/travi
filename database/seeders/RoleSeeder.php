@@ -71,7 +71,6 @@ class RoleSeeder extends Seeder
         $permissions = Permission::whereIn('name',
             [
             'reservation-list',
-            'reservation-create',
             'reservation-edit',
             'reservation-delete',
 
@@ -86,6 +85,7 @@ class RoleSeeder extends Seeder
         $owner = Role::create(['name' => 'owner']);
         $permissions = Permission::whereIn('name',
             [
+                'reservation-list',
                 'report',
             ]
         )->get();
@@ -96,7 +96,12 @@ class RoleSeeder extends Seeder
             [
                 'reservation-list',
                 'reservation-create',
-                'reservation-edit',
+                'reservation-payment',
+                'reservation-cancel',
+                'lodge-list',
+                'tour-list',
+                'news-list',
+                'tour-package-list',
             ]
         )->get();
         $customer->syncPermissions($permissions);
