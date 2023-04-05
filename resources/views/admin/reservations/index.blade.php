@@ -11,6 +11,11 @@
                         <div>
                             <h5 class="mb-0">All Reservations</h5>
                         </div>
+                        @can ('reservation-export')
+                            <div>
+                                <a href={{ route('reservations.index', ['export' => 'true']) }} class="btn btn-sm bg-gradient-success">Export</a>
+                            </div>
+                        @endcan
                     </div>
                 </div>
                 <div class="card-body px-0 pt-0 pb-2">

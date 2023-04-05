@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\ReservationsExport;
 use App\Models\Image;
 use App\Models\Customer;
 use App\Models\Reservation;
@@ -45,10 +46,12 @@ class ReservationController extends Controller
         $sort = $request->query('sort');
         $order = $request->query('order');
         $status = $request->query('status');
+        $export = $request->query('export');
 
         $sort = in_array($sort, $this->sortable) ? $sort : 'updated_at';
         $order = ! in_array($order, ['asc', 'desc']) ? 'desc' : $order;
         $status = in_array($status, $this->statuses) ? $status : null;
+        $export = $export === 'true' ? true : false;
 
         $isCustomer = auth()->user()->hasRole('customer');
 
@@ -82,8 +85,23 @@ class ReservationController extends Controller
                 return $query->whereHas('customer', function ($query) {
                     return $query->where('user_id', auth()->user()->id);
                 });
-            })
-            ->paginate(20);
+            });
+            // ->when($export, function ($query) {
+            //     dd('export');
+            //     $reservationsQuery = $query->get();
+            //     $reservationsExport = new ReservationsExport($reservationsQuery);
+
+            //     return $reservationsExport->download('reservations_ ' . date('Y-m-d H:i:s') . '.xlsx');
+            // })
+
+        if ($export) {
+            $reservationsQuery = $reservations->get();
+            $reservationsExport = new ReservationsExport($reservationsQuery);
+
+            return $reservationsExport->download('reservations_ ' . date('Y-m-d H:i:s') . '.xlsx');
+        }
+
+        $reservations = $reservations->paginate(15);
 
         return view('admin.reservations.index', [
             'reservations' => $reservations,

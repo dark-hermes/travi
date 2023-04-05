@@ -86,7 +86,7 @@ class RoleSeeder extends Seeder
         $permissions = Permission::whereIn('name',
             [
                 'reservation-list',
-                'report',
+                'reservation-export',
             ]
         )->get();
         $owner->syncPermissions($permissions);

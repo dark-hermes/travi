@@ -61,13 +61,12 @@ class PermissionSeeder extends Seeder
             'reservation-delete',
             'reservation-payment',
             'reservation-cancel',
+            'reservation-export',
 
             'employee-list',
             'employee-create',
             'employee-edit',
             'employee-delete',
-
-            'report',
         ];
 
         foreach ($permissions as $permission) {
